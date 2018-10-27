@@ -24,12 +24,21 @@ export default class Statuses extends Component {
     }
     render() {
         if (this.state.isLoading) {
-            return (
-                <View style={styles.container}>
-                    <Text>{this.props.number}</Text>
-                    <ActivityIndicator />
-                </View>
-            )
+            if (!this.props.number){
+                return (
+                    <View style={styles.container}>
+                        <Text></Text>
+                    </View>
+                )
+            }
+            else{
+                return (
+                    <View style={styles.container}>
+                        <ActivityIndicator />
+                    </View>
+                )
+            }
+            
         } else {
             let statuses = this.state.dataSource.map((val, key) => {
                 return (
