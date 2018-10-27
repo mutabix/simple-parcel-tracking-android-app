@@ -6,7 +6,10 @@ export default class Statuses extends Component {
         super(props);
         this.state = {
             isLoading: true,
-            dataSource: null
+            dataSource: null,
+            data: null,
+            details: null
+            
         }
     }
     componentDidUpdate () {
@@ -16,6 +19,7 @@ export default class Statuses extends Component {
                 this.setState({
                     isLoading: false,
                     dataSource: responseJson.statuses,
+                    data: responseJson
                 })
             })
         .catch((error) => {
@@ -60,9 +64,30 @@ export default class Statuses extends Component {
                 </View>
                 )
             });
+            if (this.state.data.sender){
+                this.state.details = (
+                    <View>
+                    <Text style={styles.header}>SZCZEGÓŁY PRZESYŁKI</Text>
+                        <View style={styles.details}>
+                            <Text style={styles.sender}>
+                                <Text style={{fontWeight: 'bold'}}>Nadawca:{"\n"}</Text>
+                                <Text>{this.state.data.sender}</Text>
+                            </Text>
+                            <Text style={styles.address}>
+                                <Text style={{fontWeight: 'bold'}}>Adres docelowy:{"\n"}</Text>
+                                <Text>{this.state.data.address}</Text>
+                            </Text>
+                        </View>
+                        <Text style={styles.header}>STATUSY</Text>
+                    </View>
+                )
+            } else this.state.details = null
             return (
-                <View style={styles.container}>
-                    {statuses}
+                <View>
+                    {this.state.details}
+                    <View style={styles.container}>                    
+                        {statuses}
+                    </View>
                 </View>
             );
         }
@@ -99,7 +124,37 @@ const styles = StyleSheet.create({
     created_at: {
         textAlign: 'right',
         fontSize: 10
+    },
+    details: {
+        flexDirection:'row',
+        height: 70,
+        padding:10
+    },
+    address: {
+        flex: 1,
+        padding: 5,
+        textAlign: 'center',
+        borderWidth: 1,
+        borderColor: 'white',
+        backgroundColor: '#f3f3f3'
+    },
+    sender: {
+        flex: 1,
+        padding: 5,
+        textAlign: 'center',
+        borderWidth: 1,
+        borderColor: 'white',
+        backgroundColor: '#f3f3f3'
+    },
+    header: {
+        fontSize: 24,
+        padding:5,
+        color: 'white',
+        backgroundColor: '#7c7c7c',
+        textAlign: 'center'
     }
+
+
 });
 
   AppRegistry.registerComponent('Statuses', () => Statuses)
