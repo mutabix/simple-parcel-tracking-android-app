@@ -6,12 +6,11 @@ export default class Statuses extends Component {
         super(props);
         this.state = {
             isLoading: true,
-            dataSource: null,
+            dataSource: null
         }
-        this.number = props.number;
     }
-    componentDidMount () {
-        return fetch('http://tracking.sakowi.cz/api/parcel/'+this.number)
+    componentDidUpdate () {
+        return fetch('http://tracking.sakowi.cz/api/parcel/'+this.props.number)
             .then ( (response) => response.json() )
             .then( (responseJson) => {
                 this.setState({
@@ -27,6 +26,7 @@ export default class Statuses extends Component {
         if (this.state.isLoading) {
             return (
                 <View style={styles.container}>
+                    <Text>{this.props.number}</Text>
                     <ActivityIndicator />
                 </View>
             )
